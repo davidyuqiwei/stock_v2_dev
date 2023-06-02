@@ -2,7 +2,7 @@ import os
 import pandas as pd
 #from davidyu_cfg import *
 #from functions.common.getFile import *
-from scripts.utils.get_file import get_uni_textfile
+from scripts_stock.utils.get_file import get_uni_textfile
 
 
 def read_txt_file(filename=None,encoding="utf8"):
