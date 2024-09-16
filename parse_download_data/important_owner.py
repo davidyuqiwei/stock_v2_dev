@@ -60,14 +60,23 @@ def df_split_flat(df1):
 #         df.to_csv(os.path.join(parse_data_dir, "all_owner_data.csv"),index=0)
 #         return df
 
-def tt():
-    print("2323")
-
-if __name__ == '__main__':
-    test_file = "../../data/download_sample_data/important_owner.txt"
+def pase_data_save(data_name,download_data_dir):
+    test_file = os.path.join(download_data_dir, data_name+".txt")
     _, data_path = parse_data_to_df(test_file)
     df1 = pd.read_csv(data_path)
     df2 = df_split_flat(df1)
     df3 = df2[['COOPERATION_HOLDER_MARK', 'END_DATE', 'HOLDER_NAME', 'HOLDER_TYPE',
                'HOLDNUM_CHANGE_TYPE', 'STATISTICS_TIMES', 'stock_index', 'stock_name']]
-    df3.to_csv("../../data/parse_data/important_owner.csv", index=0)
+    df3.to_csv(os.path.join(parse_data_dir, data_name+".csv"), index=0)
+
+if __name__ == '__main__':
+    data_list = ["owner_hk","owner_shebao"]
+    for da in data_list:
+        pase_data_save(da,download_data_dir)
+    # test_file = os.path.join(download_data_dir,"important_owner.txt")
+    # _, data_path = parse_data_to_df(test_file)
+    # df1 = pd.read_csv(data_path)
+    # df2 = df_split_flat(df1)
+    # df3 = df2[['COOPERATION_HOLDER_MARK', 'END_DATE', 'HOLDER_NAME', 'HOLDER_TYPE',
+    #            'HOLDNUM_CHANGE_TYPE', 'STATISTICS_TIMES', 'stock_index', 'stock_name']]
+    # df3.to_csv(os.path.join(parse_data_dir,"important_owner.csv"), index=0)
