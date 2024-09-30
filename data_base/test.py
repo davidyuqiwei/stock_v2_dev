@@ -1,8 +1,10 @@
 import sqlite3
 from scripts_stock.utils.common import CommonScript
+from scripts_stock.utils.logging_set import TNLog
+import pandas as pd
 
-conn = sqlite3.connect("test.db")
-cursor = conn.cursor()
+# conn = sqlite3.connect("test.db")
+# cursor = conn.cursor()
 
 
 def print_fuquan_all():
@@ -18,16 +20,35 @@ def print_fuquan_all():
 
 
 def print_all_table():
-    sql_query = """SELECT name FROM sqlite_master
-        WHERE type='table';"""
-    cursor.execute(sql_query)
-    print(cursor.fetchall())
+    conn = CommonScript.connect_to_db("test.db")
+    cursor = conn.cursor()
+    sql_query = "SELECT NAME FROM sqlite_master WHERE type='table'; "
+    df = pd.read_sql_query(sql_query, conn)
+    print(df.sort_values("name"))
 
 
-def check_table():
-    sql_query = """ owner_sina_t1"""
-    cursor.execute(sql_query)
-    print(cursor.fetchall())
+# def check_table():
+#     sql_query = """ owner_sina_t1"""
+#     cursor.execute(sql_query)
+#     print(cursor.fetchall())
+
+def print_table_test(db,table_name="prd_t_owner_sina"):
+    import pandas as pd
+    conn = CommonScript.connect_to_db(db)
+    TNLog().info("+++++++++ get sample data from DB +++++++")
+    query = f"SELECT * FROM {table_name}  limit 1"
+    # 使用pandas读取SQL查询结果
+    df_test = pd.read_sql_query(query, conn)
+    print(df_test)
+    print("=============================")
+    conn.close()
+    # 打印出DataFrame的前几行
+
+if __name__ == '__main__':
+    #print("Aaaa")
+    #print_table_test(db="test.db")
+    print_all_table()
+
 
 
 # cursor.execute("""CREATE TABLE books
@@ -42,5 +63,4 @@ stock_name,hold_num,hold_ratio,stock_type,update_date
 金宏气体,13140316,2.71,"流通A股,",2023-03-31
 """
 # check_table()
-print_fuquan_all()
 #print_all_table()

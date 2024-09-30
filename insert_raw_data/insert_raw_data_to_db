@@ -1,0 +1,47 @@
+import pandas as pd
+
+from scripts_stock.cfg.set_dir import ProjectDir
+import os 
+from scripts_stock.data_base.insert_into_db import insert_df_to_db
+from scripts_stock.data_base.cfg import DBTableName
+
+class StockList:
+
+    # @staticmethod
+    # def all_stock():
+    #     # 所有股票
+    #     stock_list_data = pd.read_excel(os.path.join(ProjectDir.data_dir,"raw_data/all_stock_qianlong_20230823_v2.xls"))
+    #     stock_list_all = [str(x).zfill(6) for x in stock_list_data["stock_index"].tolist()]
+    #     return stock_list_all
+    
+    # @staticmethod
+    # def sz50():
+    #     # 上证50
+    #     shangzheng50 = pd.read_excel(os.path.join(ProjectDir.data_dir,"raw_data/shangzheng50.xls"))
+    #     shangzheng50_list = [str(x).zfill(6) for x in shangzheng50["stock_index"].tolist()]
+    #     return shangzheng50_list
+    
+    @staticmethod
+    def hs300():
+        return os.path.join(ProjectDir.data_dir,"raw_data/hushen_300.csv")
+        # hd300_list = [str(x).zfill(6) for x in hs300_df["stock_index"].tolist()]
+        # return hd300_list
+
+    @staticmethod
+    def all_stock_index_name():
+        return os.path.join(ProjectDir.data_dir,"raw_data/all_stock_qianlong_20240929.csv")
+        # hd300_list = [str(x).zfill(6) for x in hs300_df["stock_index"].tolist()]
+        # return hd300_list
+    
+    @staticmethod
+    def all_stock_index_close():
+        return os.path.join(ProjectDir.data_dir,"raw_data/all_stock_close_qianlong_202409.csv")
+        # hd300_list = [str(x).zfill(6) for x in hs300_df["stock_index"].tolist()]
+    print("============ import stock list:  stock_list   ================")
+
+
+if __name__ == '__main__':
+    # insert_df_to_db(StockList.all_stock_index_name(),DBTableName.table_all_stock_index_name(),encoding_in="gbk")
+    # insert_df_to_db(StockList.hs300(),DBTableName.table_sh300_name(),encoding_in="gbk")
+    insert_df_to_db(StockList.all_stock_index_close(),DBTableName.table_all_stock_close_sep(),encoding_in="gbk")
+

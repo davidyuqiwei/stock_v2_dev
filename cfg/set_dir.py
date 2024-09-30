@@ -9,13 +9,14 @@ class ProjectDir():
     current_dir = os.path.abspath(__file__)
     project_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     data_dir = os.path.join(project_dir, "data")
+    model_dir = os.path.join(project_dir, "model")
+
     parse_data_dir = os.path.join(data_dir, "parse_data")
     download_sample_data_dir = os.path.join(data_dir, "download_sample_data")
     download_data_dir = os.path.join(data_dir, "download_data")
     analysis_data_dir = os.path.join(data_dir, "analysis_data")
     log_dir = os.path.join(data_dir, "log")
     database_dir = os.path.join(project_dir, "db")
-
     """
     Level 2 dir
     """
@@ -28,6 +29,14 @@ class ProjectDir():
 
     parse_data_dir_owner_dfcf = os.path.join(parse_data_dir,"owner_dfcf")
     download_data_dir_owner_dfcf = os.path.join(download_data_dir,"owner_dfcf")
+
+
+    """
+    Level 2 dir
+    """
+    parse_data_dir_fuquan_all = os.path.join(parse_data_dir,"fuquan","all")
+    download_data_dir_fuquan_all = os.path.join(download_data_dir,"fuquan","all")
+
 
     @staticmethod
     def tt():

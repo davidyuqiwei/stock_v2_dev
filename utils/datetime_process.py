@@ -1,8 +1,5 @@
 import pandas as pd
 
-
-import pandas as pd
-
 def get_quarter_ends(year=None):
     """获取指定年份每个季度的最后一天，并输出为字符串格式。
     如果没有指定年份，则默认为当前年份。
@@ -89,6 +86,16 @@ class DateRangeCalculator:
             quarterly_ranges.append((quarter_start, quarter_end))
             current_date = quarter_end + pd.offsets.Day(1)
         return quarterly_ranges
+
+
+def get_years_before_date(before=2):
+    from datetime import datetime, timedelta
+    # 获取当前日期
+    now = datetime.now()
+    # 计算两年前的日期
+    two_years_ago = now - timedelta(days=365*before)
+    # 输出两年前的日期
+    return two_years_ago.strftime('%Y-%m-%d')
 
 # 示例用法
 if __name__ == "__main__":

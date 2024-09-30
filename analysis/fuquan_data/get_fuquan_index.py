@@ -10,7 +10,7 @@ from scripts_stock.utils.analysis.stock_stat_index import df_to_stock_df, stock_
 import os
 from scripts_stock.utils.common import CommonScript
 from scripts_stock.utils.string_process import StringProcess
-
+from scripts_stock.data_base.insert_into_db import insert_df_to_db,read_db_data
 
 
 def get_data_sql_str(stock_index):
@@ -22,46 +22,67 @@ def get_fuquan_stock_index_sql_str():
                 FROM prd_t_fuquan_dfcf  
             """
 
-def get_stock_indicator(stock_df_in):
+def get_stock_indicator(stock_df_in,if_print=False):
     stock_df = df_to_stock_df(stock_df_in[["open","close","high","low","stock_index","stock_date"]])
     stock_kdj_ind, _ = stock_kdj(stock_df)
-    print(stock_kdj_ind)
+    if if_print:
+        print(stock_kdj_ind)
     #stock_kdj_ind["stock_index"] = stock_df_in["stock_index"].values[0]
     return stock_kdj_ind
 # for 
 # aaa = get_stock_indicator(df1)
 # print(aaa)
-def run_indicator():
-    conn = CommonScript.connect_to_db("test.db")
-    cursor = conn.cursor()
-    #sql_query_stock_index = 
-    stock_list_in = cursor.execute(get_fuquan_stock_index_sql_str()).fetchall()
-    stock_index_list = [x[0] for x in stock_list_in]  
+class StockIndex(ProjectDir):
+    def __init__(self,ProjectDir):
+        self.dir_stock_kdj_daily_last = os.path.join(ProjectDir.analysis_data_dir,"stock_kdj_daily_last.csv")
+        self.dir_stock_kdj_daily_all = os.path.join(ProjectDir.analysis_data_dir,"stock_kdj_daily_all.csv")
+        self.dir_stock_kdj_daily_last5 = os.path.join(ProjectDir.analysis_data_dir,"stock_kdj_daily_last5.csv")
+        
+    def get_fuquan_stock_index_all(self):
+        conn = CommonScript.connect_to_db("test.db")
+        cursor = conn.cursor()
+        #sql_query_stock_index = 
+        stock_list_in = cursor.execute(get_fuquan_stock_index_sql_str()).fetchall()
+        stock_index_list = [x[0] for x in stock_list_in]
+        conn.close()
+        return stock_index_list
+    
+    def run_indicator(self):
+        stock_index_list = self.get_fuquan_stock_index_all()
+        conn = CommonScript.connect_to_db("test.db")
+        # cursor = conn.cursor()
+        ind_list_last = []
+        ind_list_last5 = []
+        ind_list_all = []
+        for stock_index in stock_index_list:
+            input_sql_str = get_data_sql_str(stock_index)
+            df1 = pd.read_sql_query(input_sql_str, conn)
+            df1["stock_index"] = StringProcess.int_to_stock_index(df1["stock_index"].values[0])
+            df1['stock_date'] = df1["date"]
+            stock_kdj_ind = get_stock_indicator(df1)
+            ind_list_last.append(stock_kdj_ind.iloc[-1])
+            ind_list_last5.append(stock_kdj_ind.tail(5))
+            ind_list_all.append(stock_kdj_ind)
+        df_out_last = pd.DataFrame(ind_list_last)
+        df_out_all = pd.concat(ind_list_all)
+        df_out_last5 = pd.concat(ind_list_last5)
+        # dir1 = os.path.join(ProjectDir.analysis_data_dir,"stock_kdj_daily_last.csv")
+        df_out_last.round(3).to_csv(self.dir_stock_kdj_daily_last,index=0)  # type: ignore
+        df_out_all.round(3).to_csv(self.dir_stock_kdj_daily_all,index=0) # type: ignore
+        df_out_last5.round(3).to_csv(self.dir_stock_kdj_daily_last5,index=0) # type: ignore
+        conn.close()
 
-    ind_list_last = []
-    ind_list_last5 = []
-    ind_list_all = []
-    for stock_index in stock_index_list:
-        input_sql_str = get_data_sql_str(stock_index)
-        df1 = pd.read_sql_query(input_sql_str, conn)
-        df1["stock_index"] = StringProcess.int_to_stock_index(df1["stock_index"].values[0])
-        df1['stock_date'] = df1["date"]
-        stock_kdj_ind = get_stock_indicator(df1)
-        ind_list_last.append(stock_kdj_ind.iloc[-1])
-        ind_list_last5.append(stock_kdj_ind.tail(5))
-        ind_list_all.append(stock_kdj_ind)
-    df_out_last = pd.DataFrame(ind_list_last)
-    df_out_all = pd.concat(ind_list_all)
-    df_out_last5 = pd.concat(ind_list_last5)
+    def insert_index_data2db(self):
+        insert_df_to_db(self.dir_stock_kdj_daily_last,"t_stock_kdj_daily_last")
+        insert_df_to_db(self.dir_stock_kdj_daily_all,"t_stock_kdj_daily_all")
+        insert_df_to_db(self.dir_stock_kdj_daily_last5,"t_stock_kdj_daily_last5")
 
-    df_out_last.round(3).to_csv(os.path.join(ProjectDir.analysis_data_dir,"stock_kdj_last.csv"),index=0)
-    df_out_all.round(3).to_csv(os.path.join(ProjectDir.analysis_data_dir,"stock_kdj_all.csv"),index=0)
-    df_out_last5.round(3).to_csv(os.path.join(ProjectDir.analysis_data_dir,"stock_kdj_last5.csv"),index=0)
+
 
 
 def run_indicator_v2():
     """
-    revise this one
+    revise this one, monthly kdj macd
     """
     conn = CommonScript.connect_to_db("test.db")
     cursor = conn.cursor()
@@ -76,6 +97,9 @@ def run_indicator_v2():
         input_sql_str = get_data_sql_str(stock_index)
         df1 = pd.read_sql_query(input_sql_str, conn)
         df1["stock_index"] = StringProcess.int_to_stock_index(df1["stock_index"].values[0])
+        """
+        monthly indicators
+        """
         df2 = df1.groupby(lambda x:math.floor(x/30)).min()
         df3 = df1.groupby(lambda x:math.floor(x/30)).max()
         df4 = df1.groupby(lambda x:math.floor(x/30)).last()
@@ -94,10 +118,10 @@ def run_indicator_v2():
     df_out_all = pd.concat(ind_list_all)
     df_out_last5 = pd.concat(ind_list_last5)
 
-    df_out_last.round(3).to_csv(os.path.join(ProjectDir.analysis_data_dir,"stock_kdj_last.csv"),index=0)
-    df_out_all.round(3).to_csv(os.path.join(ProjectDir.analysis_data_dir,"stock_kdj_all.csv"),index=0)
-    df_out_last5.round(3).to_csv(os.path.join(ProjectDir.analysis_data_dir,"stock_kdj_last5.csv"),index=0)
-
+    df_out_last.round(3).to_csv(os.path.join(ProjectDir.analysis_data_dir,"stock_kdj_last.csv"),index=0) # type: ignore
+    df_out_all.round(3).to_csv(os.path.join(ProjectDir.analysis_data_dir,"stock_kdj_all.csv"),index=0) # type: ignore
+    df_out_last5.round(3).to_csv(os.path.join(ProjectDir.analysis_data_dir,"stock_kdj_last5.csv"),index=0) # type: ignore
+ 
 
 def new_kdj(df,kdj_day=9,k_stat=3,d_stat=3):
     low_list = df['low'].rolling(kdj_day, min_periods=kdj_day).min()
@@ -138,8 +162,13 @@ def new_macd(df2,col,MACD_EMA_SHORT = 12,MACD_EMA_LONG = 26, MACD_EMA_SIGNAL = 9
     return df2
 
 if __name__ == '__main__':
-    # run_indicator()
-    run_indicator_v2()
+    #print("aaaaa")
+    stock_index_v1 = StockIndex(ProjectDir)
+    stock_index_v1.run_indicator()
+    stock_index_v1.insert_index_data2db()
+
+
+    #run_indicator_v2()
     """
     
     df1 = pd.read_csv(os.path.join(ProjectDir.download_data_dir_fuquan,"fq_600919.csv"))

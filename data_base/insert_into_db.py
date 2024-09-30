@@ -1,8 +1,8 @@
 from scripts_stock.cfg.db_cfg import DbCfg
+from scripts_stock.data_base.test import print_table_test
 from scripts_stock.utils.common import CommonScript
 from scripts_stock.cfg.set_dir import *
 from datetime import datetime
-
 import pandas as pd
 from scripts_stock.utils.logging_set import *
 
@@ -20,7 +20,7 @@ def save_to_db(input_df,target_db="test.db",target_table="test"):
     conn = CommonScript.connect_to_db(target_db)
     input_df.drop_duplicates().to_sql(target_table, conn, if_exists="replace", index=False)
     conn.close()
-    TNLog().info(f"===========fuquan data save to {target_table} =============")
+    TNLog().info(f"=========== data save to {target_table} =============")
 
 
 def fuquan_data_insert_to_db(fuquan_table="prd_t_fuquan_dfcf"):
@@ -43,10 +43,26 @@ def owner_sina_data_insert_to_db(target_table="prd_t_owner_sina"):
             encoding="utf-8-sig",
         )
         save_to_db(input_df=df1,target_table=target_table)
-    except:
-        pass
-        TNLog().error(f"===========fuquan data cannot save to db =============")
+        TNLog().info(f"===========sina owner data save to db-table prd_t_owner_sina=============")
+        print_table_test(db="test.db",table_name="prd_t_owner_sina")
+    except Exception as ex:
+        TNLog().error(f"===========sina owner data cannot save to db =============")
+        print(ex)
 
+def read_db_data(data_dir):
+    df1 = pd.read_csv(os.path.join(data_dir),encoding="utf-8-sig")
+    return df1
+
+def insert_df_to_db(data_dir,target_table,target_db="test.db",encoding_in="utf-8-sig"):
+    try:
+        df1 = pd.read_csv(data_dir,encoding=encoding_in)
+        save_to_db(df1,target_db=target_db,target_table=target_table)
+        TNLog().info(f"=========== call insert_df_to_db=============")
+        print_table_test(db="test.db",table_name=target_table)
+    except Exception as e:
+        pass
+        TNLog().error(f"==========={data_dir} cannot save to db =============")
+        TNLog().error(e)
 
 
 
@@ -62,5 +78,6 @@ def owner_sina_data_insert_to_db(target_table="prd_t_owner_sina"):
 
 
 if __name__ == "__main__":
+    print("aaa")
     #fuquan_data_insert_to_db(DbCfg.fuquan_db_dfcf)
-    owner_sina_data_insert_to_db()
+    #owner_sina_data_insert_to_db()
