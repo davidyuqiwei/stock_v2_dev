@@ -36,7 +36,7 @@ def download_fuquan_schedule(stock_list_fq, save_dir):
                 print("====================================")
                 pass
 
-
+           
 def combine_fuquan_data(stock_download_dir, all_dir):
     import pandas as pd
 

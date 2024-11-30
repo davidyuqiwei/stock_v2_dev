@@ -44,7 +44,7 @@ class StockIndex(ProjectDir):
         self.stock_index_list = GetDataFromDB.get_fuquan_stock_index_all()
 
     
-    def run_indicator(self,GetDataFromDB,if_test="ALL"):
+    def run_indicator(self , GetDataFromDB,if_test="ALL"):
         """
         calculate daily indicator
         """
@@ -94,7 +94,8 @@ class StockIndex(ProjectDir):
         insert_df_to_db(self.dir_stock_kdj_weekly_last5,"t_stock_kdj_weekly_last5")
         insert_df_to_db(self.dir_stock_kdj_weekly_last60,"t_stock_kdj_weekly_last60")
 
-
+    # cal_t_hs300_etf_daily_return
+    # prd_t_fuquan_dfcf
     def get_weekly_price(self,input_df: pd.DataFrame):
         df1 = input_df
         df2 = df1.groupby(lambda x:math.floor(x/5)).min()

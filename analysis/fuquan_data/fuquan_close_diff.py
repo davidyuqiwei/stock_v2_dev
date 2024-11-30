@@ -8,7 +8,7 @@ from scripts_stock.utils.common import CommonScript
 #from scripts_stock.utils.string_process import StringProcess
 from scripts_stock.analysis.fuquan_data.get_data_sql import FGetDataSql # type: ignore
 from scripts_stock.utils.datetime_process import get_years_before_date
-from scripts_stock.analysis.fuquan_data.get_fuquan_index import StockIndex
+from scripts_stock.analysis.fuquan_data.old.get_fuquan_index import StockIndex
 from scripts_stock.data_base.insert_into_db import insert_df_to_db
 
 
@@ -17,27 +17,28 @@ def name_list():
     pre_str = "diff"
     get_str = []
     for i in [1,3,5,7]:
-        get_str.append(pre_str + "_" + str(i))
+        get_str.append(pre_str + "_" + str(i) + "_ratio")
         get_str.append(pre_str + "_" + str(i)+"_cate")
     return get_str
+
 
 def get_returns(df1) -> pd.DataFrame:
     import numpy as np
     diff1 = (df1['close'].shift(-1) - df1['close'])/df1['close']
     # diff1_cate = p_n_cate(diff1)
-    df1['diff_1'] = diff1
-    df1['diff_1_cate'] = np.where(df1['diff_1'] > 0, 1,np.where(df1['diff_1'] < 0,0, df1['diff_1']))
+    df1['diff_1_ratio'] = diff1
+    df1['diff_1_cate'] = np.where(df1['diff_1_ratio'] > 0, 1,np.where(df1['diff_1_ratio'] < 0,0, df1['diff_1_ratio']))
 
-    df1['diff_3'] = (df1['close'].shift(-3) - df1['close'])/df1['close']
-    df1['diff_3_cate'] = np.where(df1['diff_3'] > 0, 1,np.where(df1['diff_3'] < 0,0, df1['diff_3']))
+    df1['diff_3_ratio'] = (df1['close'].shift(-3) - df1['close'])/df1['close']
+    df1['diff_3_cate'] = np.where(df1['diff_3_ratio'] > 0, 1,np.where(df1['diff_3_ratio'] < 0,0, df1['diff_3_ratio']))
 
-    df1['diff_5'] = (df1['close'].shift(-5) - df1['close'])/df1['close']
-    df1['diff_5_cate'] = np.where(df1['diff_5'] > 0, 1,np.where(df1['diff_5'] < 0,0, df1['diff_5']))
+    df1['diff_5_ratio'] = (df1['close'].shift(-5) - df1['close'])/df1['close']
+    df1['diff_5_cate'] = np.where(df1['diff_5_ratio'] > 0, 1,np.where(df1['diff_5_ratio'] < 0,0, df1['diff_5_ratio']))
 
-    df1['diff_7'] = (df1['close'].shift(-7) - df1['close'])/df1['close']
-    df1['diff_7_cate'] =  np.where(df1['diff_7'] > 0, 1,np.where(df1['diff_7'] < 0,0, df1['diff_7']))
+    df1['diff_7_ratio'] = (df1['close'].shift(-7) - df1['close'])/df1['close']
+    df1['diff_7_cate'] =  np.where(df1['diff_7_ratio'] > 0, 1,np.where(df1['diff_7_ratio'] < 0,0, df1['diff_7_ratio']))
     df2 = df1.round(3)
-    df3 = pd.DataFrame(df2[["date","stock_index"]+name_list()])
+    df3 = pd.DataFrame(df2[["date","stock_index","close"]+name_list()])
     return df3
 
 

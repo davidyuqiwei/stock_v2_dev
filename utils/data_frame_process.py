@@ -26,5 +26,11 @@ class DataFrameProcess:
         for csv_file in csv_list:
             df1 = pd.read_csv(os.path.join(target_dir, csv_file))
             df_list.append(df1)
-        df2 = pd.concat(df_list)
+        df2 = pd.concat(df_list,sort=False).drop_duplicates()
         return df2
+    
+
+if __name__ == "__main__":
+    stock_download_dir = "/home/davidyu/vscode/data/download_data/fuquan"
+    df1 = DataFrameProcess.combine_all_dataframe_in_dir(stock_download_dir)
+    print(df1)

@@ -1,5 +1,6 @@
 import os
-#from scripts_stock.utils.logging_set import *
+# from scripts_stock.utils.logging_set import *
+
 
 class ProjectDir():
 
@@ -15,13 +16,13 @@ class ProjectDir():
     download_sample_data_dir = os.path.join(data_dir, "download_sample_data")
     download_data_dir = os.path.join(data_dir, "download_data")
     analysis_data_dir = os.path.join(data_dir, "analysis_data")
-    log_dir = os.path.join(data_dir, "log")
+    log_dir = os.path.join(project_dir, "log")
     database_dir = os.path.join(project_dir, "db")
     """
     Level 2 dir
     """
 
-    parse_data_dir_fuquan = os.path.join(parse_data_dir,"fuquan")
+    parse_data_dir_fuquan = os.path.join(parse_data_dir , "fuquan")
     download_data_dir_fuquan = os.path.join(download_data_dir,"fuquan")
 
     parse_data_dir_owner_sina = os.path.join(parse_data_dir,"owner_sina")
@@ -30,6 +31,11 @@ class ProjectDir():
     parse_data_dir_owner_dfcf = os.path.join(parse_data_dir,"owner_dfcf")
     download_data_dir_owner_dfcf = os.path.join(download_data_dir,"owner_dfcf")
 
+    download_data_dir_cash_flow = os.path.join(download_data_dir,"cash_flow")
+    parse_data_dir_cash_flow = os.path.join(parse_data_dir,"cash_flow")
+
+    download_data_dir_fin_report = os.path.join(download_data_dir,"fin_report")
+    parse_data_dir_fin_report = os.path.join(parse_data_dir,"fin_report")
 
     """
     Level 2 dir
@@ -68,9 +74,10 @@ class ProjectDir():
                 print(" not a folder")
 
 if __name__ == '__main__':
-    # ProjectDir.create_data_folder()
-    print(ProjectDir.download_data_dir_fuquan)
-    #print(ProjectDir.project_dir)
+    #ProjectDir.create_dir(ProjectDir.parse_data_dir_cash_flow)
+    #print(ProjectDir.download_data_dir_cash_flow)
+    ProjectDir().create_data_folder()
+    print(ProjectDir.project_dir)
     #print(ProjectDir.__dict__.keys())
     """
     for aa in ProjectDir.__dict__.keys():

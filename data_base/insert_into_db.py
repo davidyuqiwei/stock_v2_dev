@@ -10,7 +10,7 @@ from scripts_stock.utils.logging_set import *
 dt = datetime.now()
 
 
-def save_to_db(input_df,target_db="test.db",target_table="test"):
+def df_save_to_db(input_df,target_db="test.db",target_table="test"):
     dt = datetime.now()
     print("------------------------")
     print(dt)
@@ -21,6 +21,7 @@ def save_to_db(input_df,target_db="test.db",target_table="test"):
     input_df.drop_duplicates().to_sql(target_table, conn, if_exists="replace", index=False)
     conn.close()
     TNLog().info(f"=========== data save to {target_table} =============")
+    print_table_test(db=target_db,table_name=target_table)
 
 
 def fuquan_data_insert_to_db(fuquan_table="prd_t_fuquan_dfcf"):
@@ -29,7 +30,7 @@ def fuquan_data_insert_to_db(fuquan_table="prd_t_fuquan_dfcf"):
             os.path.join(ProjectDir.parse_data_dir_fuquan, "fq_all.csv"),
             encoding="utf-8-sig",
         )
-        save_to_db(df1,target_db="test.db",target_table=fuquan_table)
+        df_save_to_db(df1,target_db="test.db",target_table=fuquan_table)
     except:
         pass
         TNLog().error(f"===========fuquan data cannot save to db =============")
@@ -42,7 +43,7 @@ def owner_sina_data_insert_to_db(target_table="prd_t_owner_sina"):
             os.path.join(ProjectDir.parse_data_dir_owner_sina, "owner_sina_combine.csv"),
             encoding="utf-8-sig",
         )
-        save_to_db(input_df=df1,target_table=target_table)
+        df_save_to_db(input_df=df1,target_table=target_table)
         TNLog().info(f"===========sina owner data save to db-table prd_t_owner_sina=============")
         print_table_test(db="test.db",table_name="prd_t_owner_sina")
     except Exception as ex:
@@ -56,7 +57,7 @@ def read_db_data(data_dir):
 def insert_df_to_db(data_dir,target_table,target_db="test.db",encoding_in="utf-8-sig"):
     try:
         df1 = pd.read_csv(data_dir,encoding=encoding_in)
-        save_to_db(df1,target_db=target_db,target_table=target_table)
+        df_save_to_db(df1,target_db=target_db,target_table=target_table)
         TNLog().info(f"=========== call insert_df_to_db=============")
         print_table_test(db="test.db",table_name=target_table)
     except Exception as e:

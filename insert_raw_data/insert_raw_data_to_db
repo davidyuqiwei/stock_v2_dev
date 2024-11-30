@@ -38,10 +38,27 @@ class StockList:
         return os.path.join(ProjectDir.data_dir,"raw_data/all_stock_close_qianlong_202409.csv")
         # hd300_list = [str(x).zfill(6) for x in hs300_df["stock_index"].tolist()]
     print("============ import stock list:  stock_list   ================")
+    
+    @staticmethod
+    def hs300_etf():
+        """
+        column name
+        ['date', 'open', 'high', 'low', 'close', 'volume', 'cash', 'KLINE_5MA',
+       'KLINE_10MA1', 'KLINE_15MA2', 'KLINE_30MA3', 'KLINE_60MA4',
+       'KLINE_120MA5', 'KLINE_250MA6', 'MACD_DIF', 'MACD_MACD',
+       'MACD_DIF_MACD', 'KDJ_K', 'KDJ_D', 'KDJ_J']
+        """
+        data_dir = os.path.join(ProjectDir.data_dir,"raw_data/hs300_etf_159919_20240930.csv")
+        df1 = pd.read_csv(data_dir)
+        df1.columns = [x.replace(".","_").replace("-","_") for x in df1.columns]
+        df1.to_csv(data_dir,index=0) # type: ignore
+        return data_dir
+        # hd300_list = [str(x).zfill(6) for x in hs300_df["stock_index"].tolist()]
+    print("============ import stock list:  stock_list   ================")
 
 
 if __name__ == '__main__':
     # insert_df_to_db(StockList.all_stock_index_name(),DBTableName.table_all_stock_index_name(),encoding_in="gbk")
     # insert_df_to_db(StockList.hs300(),DBTableName.table_sh300_name(),encoding_in="gbk")
-    insert_df_to_db(StockList.all_stock_index_close(),DBTableName.table_all_stock_close_sep(),encoding_in="gbk")
+    insert_df_to_db(StockList.hs300_etf(),DBTableName.table_hs300_etf(),encoding_in="gbk")
 

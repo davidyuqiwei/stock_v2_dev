@@ -1,0 +1,346 @@
+[
+    {
+        "config": {
+            "defaultAggregated": true,
+            "geoms": [
+                "table"
+            ],
+            "coordSystem": "generic",
+            "limit": -1,
+            "timezoneDisplayOffset": 0
+        },
+        "encodings": {
+            "dimensions": [
+                {
+                    "fid": "date",
+                    "name": "date",
+                    "basename": "date",
+                    "semanticType": "nominal",
+                    "analyticType": "dimension",
+                    "offset": 0
+                },
+                {
+                    "fid": "stock_index",
+                    "name": "stock_index",
+                    "basename": "stock_index",
+                    "semanticType": "nominal",
+                    "analyticType": "dimension",
+                    "offset": 0
+                },
+                {
+                    "fid": "date_time",
+                    "name": "date_time",
+                    "basename": "date_time",
+                    "semanticType": "nominal",
+                    "analyticType": "dimension",
+                    "offset": 0
+                },
+                {
+                    "fid": "stock_date",
+                    "name": "stock_date",
+                    "basename": "stock_date",
+                    "semanticType": "nominal",
+                    "analyticType": "dimension",
+                    "offset": 0
+                },
+                {
+                    "fid": "update_time",
+                    "name": "update_time",
+                    "basename": "update_time",
+                    "semanticType": "nominal",
+                    "analyticType": "dimension",
+                    "offset": 0
+                },
+                {
+                    "fid": "stock_name",
+                    "name": "stock_name",
+                    "basename": "stock_name",
+                    "semanticType": "nominal",
+                    "analyticType": "dimension",
+                    "offset": 0
+                },
+                {
+                    "fid": "gw_mea_key_fid",
+                    "name": "Measure names",
+                    "analyticType": "dimension",
+                    "semanticType": "nominal"
+                }
+            ],
+            "measures": [
+                {
+                    "fid": "open",
+                    "name": "open",
+                    "basename": "open",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "close",
+                    "name": "close",
+                    "basename": "close",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "high",
+                    "name": "high",
+                    "basename": "high",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "low",
+                    "name": "low",
+                    "basename": "low",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "macdh",
+                    "name": "macdh",
+                    "basename": "macdh",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "cci",
+                    "name": "cci",
+                    "basename": "cci",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "rsi_6",
+                    "name": "rsi_6",
+                    "basename": "rsi_6",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "rsi_12",
+                    "name": "rsi_12",
+                    "basename": "rsi_12",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "rsi_24",
+                    "name": "rsi_24",
+                    "basename": "rsi_24",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "kdjk",
+                    "name": "kdjk",
+                    "basename": "kdjk",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "kdjd",
+                    "name": "kdjd",
+                    "basename": "kdjd",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "kdjj",
+                    "name": "kdjj",
+                    "basename": "kdjj",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "boll_ub",
+                    "name": "boll_ub",
+                    "basename": "boll_ub",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "boll_lb",
+                    "name": "boll_lb",
+                    "basename": "boll_lb",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "macd",
+                    "name": "macd",
+                    "basename": "macd",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "macds",
+                    "name": "macds",
+                    "basename": "macds",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "wr_6",
+                    "name": "wr_6",
+                    "basename": "wr_6",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "wr_10",
+                    "name": "wr_10",
+                    "basename": "wr_10",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "offset": 0
+                },
+                {
+                    "fid": "gw_count_fid",
+                    "name": "Row count",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum",
+                    "computed": true,
+                    "expression": {
+                        "op": "one",
+                        "params": [],
+                        "as": "gw_count_fid"
+                    }
+                },
+                {
+                    "fid": "gw_mea_val_fid",
+                    "name": "Measure values",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "sum"
+                }
+            ],
+            "rows": [
+                {
+                    "fid": "stock_index",
+                    "name": "stock_index",
+                    "basename": "stock_index",
+                    "semanticType": "nominal",
+                    "analyticType": "dimension",
+                    "offset": 0
+                },
+                {
+                    "fid": "stock_name",
+                    "name": "stock_name",
+                    "basename": "stock_name",
+                    "semanticType": "nominal",
+                    "analyticType": "dimension",
+                    "offset": 0
+                }
+            ],
+            "columns": [
+                {
+                    "fid": "stock_date",
+                    "name": "stock_date",
+                    "basename": "stock_date",
+                    "semanticType": "nominal",
+                    "analyticType": "dimension",
+                    "offset": 0
+                },
+                {
+                    "fid": "macd",
+                    "name": "macd",
+                    "basename": "macd",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "mean",
+                    "offset": 0
+                },
+                {
+                    "fid": "kdjj",
+                    "name": "kdjj",
+                    "basename": "kdjj",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "mean",
+                    "offset": 0
+                },
+                {
+                    "fid": "close",
+                    "name": "close",
+                    "basename": "close",
+                    "analyticType": "measure",
+                    "semanticType": "quantitative",
+                    "aggName": "mean",
+                    "offset": 0
+                }
+            ],
+            "color": [],
+            "opacity": [],
+            "size": [],
+            "shape": [],
+            "radius": [],
+            "theta": [],
+            "longitude": [],
+            "latitude": [],
+            "geoId": [],
+            "details": [],
+            "filters": [],
+            "text": []
+        },
+        "layout": {
+            "showActions": false,
+            "showTableSummary": false,
+            "stack": "stack",
+            "interactiveScale": false,
+            "zeroScale": true,
+            "size": {
+                "mode": "auto",
+                "width": 320,
+                "height": 200
+            },
+            "format": {},
+            "geoKey": "name",
+            "resolve": {
+                "x": false,
+                "y": false,
+                "color": false,
+                "opacity": false,
+                "shape": false,
+                "size": false
+            }
+        },
+        "visId": "gw_ryC2",
+        "name": "Chart 1"
+    }
+]
