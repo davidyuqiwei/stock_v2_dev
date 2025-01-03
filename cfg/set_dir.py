@@ -37,13 +37,29 @@ class ProjectDir():
     download_data_dir_fin_report = os.path.join(download_data_dir,"fin_report")
     parse_data_dir_fin_report = os.path.join(parse_data_dir,"fin_report")
 
+    download_data_dir_hs300 = os.path.join(download_data_dir,"hs300")
+    parse_data_dir_hs300 = os.path.join(parse_data_dir,"hs300")
+
+    download_data_owner_dfcf = os.path.join(download_data_dir,"owner_dfcf")
+    parse_data_owner_dfcf = os.path.join(parse_data_dir,"owner_dfcf")
+
+    download_data_dir_bankuai_cash_flow = os.path.join(download_data_dir, "cash_flow","bankuai")
+    parse_data_dir_bankuai_cash_flow = os.path.join(
+        parse_data_dir, "cash_flow", "bankuai")
+    
+
+
     """
     Level 2 dir
     """
     parse_data_dir_fuquan_all = os.path.join(parse_data_dir,"fuquan","all")
     download_data_dir_fuquan_all = os.path.join(download_data_dir,"fuquan","all")
 
+    download_profit_data_dir = os.path.join(download_data_dir_fin_report,"profit_data")
+    parse_data_dir_profit_data = os.path.join(parse_data_dir_fin_report,"profit_data")
 
+    download_basic_data_dir = os.path.join(download_data_dir_fin_report, "basic_data")
+    parse_data_basic_dir = os.path.join(parse_data_dir_fin_report, "basic_data")
     @staticmethod
     def tt():
         return os.path.abspath(__file__)

@@ -8,6 +8,7 @@ import time
 import logging
 import inspect
 from scripts_stock.cfg.set_dir import ProjectDir
+import traceback
 
 handlers = {
             logging.NOTSET: os.path.join(ProjectDir.log_dir,"logging.log"),
@@ -69,6 +70,21 @@ class TNLog(object):
     def critical(self, message):
         message = self.getLogMessage("critical", message)
         self.__loggers[logging.CRITICAL].critical(message)
+
+
+def print_exception_info():
+    exc_type, exc_value, exc_traceback = sys.exc_info()
+    print("Exception Type:", exc_type)
+    print("Exception Message:", exc_value)
+
+    # 获取回溯对象中的帧列表
+    tb_frames = traceback.extract_tb(exc_traceback)
+
+    for frame in tb_frames:
+        filename, line_number, function_name, text = frame
+        print(
+            f'File: {filename}, Line: {line_number}, In Function: {function_name}')
+        print(f'  {text}')
 
 
 if __name__ == "__main__":

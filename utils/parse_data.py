@@ -10,7 +10,7 @@ import os
 
 from scripts_stock.cfg.set_dir import *
 from scripts_stock.utils.string_process import StringProcess
-
+from scripts_stock.utils.open_url import get_html_table
 
 def parse_data_to_df(file_in, project_dir, save_data="parse_data.csv"):
     df1 = read_txt_file(file_in)
@@ -42,3 +42,10 @@ def parse_chigu_table_sina(table_in):
             data_list.append(kk_div_v2)
     df_out = pd.DataFrame(data_list)
     return df_out
+
+
+if __name__ == '__main__':
+    url1 = "https://vip.stock.finance.sina.com.cn/corp/go.php/vCI_StockHolder/stockid/601398.phtml"
+    table_in, new_table_index = get_html_table(url1)
+    aa = parse_chigu_table_sina(table_in)
+    print(aa)

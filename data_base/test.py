@@ -3,8 +3,6 @@ from scripts_stock.utils.common import CommonScript
 from scripts_stock.utils.logging_set import TNLog
 import pandas as pd
 
-# conn = sqlite3.connect("test.db")
-# cursor = conn.cursor()
 
 
 def print_fuquan_all():

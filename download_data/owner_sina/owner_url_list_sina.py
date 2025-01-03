@@ -26,7 +26,7 @@ class DataURLSina:
         :return:
         """
         return "sina_owner_hkjiesuan","https://vip.stock.finance.sina.com.cn/corp/view/vCI_HoldStockState.php?stockid=601398&stockholderid=80568462"
-    
+        #return "sina_owner_hkjiesuan","https://vip.stock.finance.sina.com.cn/corp/go.php/vCI_StockHolder/stockid/601398.phtml"
     def owner_merrill_lynch(self):
         """
         MERRILL LYNCH

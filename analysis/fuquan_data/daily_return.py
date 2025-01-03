@@ -32,7 +32,8 @@ class StockReturn:
             stock_index_list_loop = self.stock_index_list
         for stock_index in stock_index_list_loop:
             try:
-                df1 = GetDataFromDB.get_fuquan_all_one_stock_df(stock_index)
+                df_raw = GetDataFromDB.get_fuquan_all_one_stock_df(stock_index)
+                df1 = df_raw[['date', 'close', "stock_index"]].sort_values("date").drop_duplicates()
                 df1['return_ratio'] = df1['close'] / df1['close'].shift(1)
                 df2 = df1[['date','close','return_ratio',"stock_index"]]
                 return_list.append(df2)
@@ -46,4 +47,4 @@ class StockReturn:
 if __name__ == '__main__':
     df3 = StockReturn().fuquan_hs300_return().round(3).dropna()
     #print(df3)
-    df_save_to_db(input_df=df3,target_table="cal_t_fuquan_daily_return")
+    df_save_to_db(input_df=df3,target_table="cal_t_fuquan_daily_return",if_there='replace')

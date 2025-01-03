@@ -1,6 +1,6 @@
 import sqlite3
 from scripts_stock.cfg.set_dir import *
-from scripts_stock.data_base.create_table_structure import create_table, get_df_column_type_sqllite, make_column_str
+from scripts_stock.data_base.old.create_table_structure import create_table, get_df_column_type_sqllite, make_column_str
 import pandas as pd
 
 

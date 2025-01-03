@@ -24,8 +24,10 @@ def get_last_day_of_quarter_range(start_year=2013,end_year=2024):
     for year in range(start_year, end_year + 1):
         for quarter in range(1, 5):  # 一年有四个季度
             quater_end_list.append(get_last_day_of_quarter(year, quarter))
+    quater_end_list.reverse()
     return quater_end_list
 
 if __name__ == "__main__":
     a1 = get_last_day_of_quarter_range()
+    a1.reverse()
     print(a1)

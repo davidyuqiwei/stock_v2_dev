@@ -56,16 +56,25 @@ class StockIndex(ProjectDir):
             stock_index_list_loop = self.stock_index_list[0:5]
         else:
             stock_index_list_loop = self.stock_index_list
+    
         for stock_index in stock_index_list_loop:
-            #input_sql_str = get_all_fuquan_one_stock(stock_index)
-            df1 = GetDataFromDB.get_fuquan_all_one_stock_df(stock_index)
-            df1["stock_index"] = StringProcess.int_to_stock_index(df1["stock_index"].values[0])
-            df1['stock_date'] = df1["date"]
-            stock_kdj_ind = get_stock_indicator(df1)
-            ind_list_last.append(stock_kdj_ind.iloc[-1])
-            ind_list_last5.append(stock_kdj_ind.tail(5))
-            ind_list_last60.append(stock_kdj_ind.tail(60))
-            ind_list_all.append(stock_kdj_ind)
+            try:
+                #input_sql_str = get_all_fuquan_one_stock(stock_index)
+                df1 = GetDataFromDB.get_fuquan_all_one_stock_df(
+                    stock_index).sort_values("date")
+                df1["stock_index"] = StringProcess.int_to_stock_index(df1["stock_index"].values[0])
+                df1['stock_date'] = df1["date"]
+                stock_kdj_ind = get_stock_indicator(df1)
+                ind_list_last.append(stock_kdj_ind.iloc[-1])
+                ind_list_last5.append(stock_kdj_ind.tail(5))
+                ind_list_last60.append(stock_kdj_ind.tail(60))
+                ind_list_all.append(stock_kdj_ind)
+            except Exception as e:
+                TNLog().error("==========================================")
+                TNLog().error("==== get KDJ MACD run_indicator error ====")
+                TNLog().error(e)
+                TNLog().error("==========================================")
+                pass
 
         df_out_last = pd.DataFrame(ind_list_last)
         df_out_all = pd.concat(ind_list_all)
@@ -77,25 +86,12 @@ class StockIndex(ProjectDir):
         df_out_last5.round(3).to_csv(self.dir_stock_kdj_daily_last5,index=0) # type: ignore
         df_out_last60.round(3).to_csv(self.dir_stock_kdj_daily_last60,index=0) # type: ignore
         # conn.close()
-        print("======================================")
-        TNLog().info("=finish get stock daily indicators=")
-        print("=====================================")
+        # print("======================================")
+        # TNLog().info("=finish get stock daily indicators=")
+        # print("=====================================")
 
-    def insert_index_data2db(self):
-        insert_df_to_db(self.dir_stock_kdj_daily_last,"t_stock_kdj_daily_last")
-        insert_df_to_db(self.dir_stock_kdj_daily_all,"t_stock_kdj_daily_all")
-        insert_df_to_db(self.dir_stock_kdj_daily_last5,"t_stock_kdj_daily_last5")
-        insert_df_to_db(self.dir_stock_kdj_daily_last60,"t_stock_kdj_daily_last60")
-        """
-        insert weekly 
-        """
-        insert_df_to_db(self.dir_stock_kdj_weekly_last,"t_stock_kdj_weekly_last")
-        insert_df_to_db(self.dir_stock_kdj_weekly_all,"t_stock_kdj_weekly_all")
-        insert_df_to_db(self.dir_stock_kdj_weekly_last5,"t_stock_kdj_weekly_last5")
-        insert_df_to_db(self.dir_stock_kdj_weekly_last60,"t_stock_kdj_weekly_last60")
 
-    # cal_t_hs300_etf_daily_return
-    # prd_t_fuquan_dfcf
+
     def get_weekly_price(self,input_df: pd.DataFrame):
         df1 = input_df
         df2 = df1.groupby(lambda x:math.floor(x/5)).min()
@@ -122,16 +118,23 @@ class StockIndex(ProjectDir):
         else:
             stock_index_list_loop = self.stock_index_list
         for stock_index in stock_index_list_loop:
-            df_raw = GetDataFromDB.get_fuquan_all_one_stock_df(stock_index)
-            start_from = df_raw.shape[0]%5
-            df_raw = GetDataFromDB.get_fuquan_all_one_stock_df(stock_index)
-            df1 = df_raw.iloc[start_from:].copy(deep=False).reset_index()
-            df_input = self.get_weekly_price(df1)
-            stock_kdj_ind = get_stock_indicator(df_input)
-            ind_list_last.append(stock_kdj_ind.iloc[-1])
-            ind_list_last5.append(stock_kdj_ind.tail(5))
-            ind_list_last60.append(stock_kdj_ind.tail(60))
-            ind_list_all.append(stock_kdj_ind)
+            try:
+                df_raw = GetDataFromDB.get_fuquan_all_one_stock_df(stock_index)
+                start_from = df_raw.shape[0]%5
+                df1 = df_raw.iloc[start_from:].copy(
+                    deep=False).reset_index().sort_values("date")
+                df_input = self.get_weekly_price(df1)
+                stock_kdj_ind = get_stock_indicator(df_input)
+                ind_list_last.append(stock_kdj_ind.iloc[-1])
+                ind_list_last5.append(stock_kdj_ind.tail(5))
+                ind_list_last60.append(stock_kdj_ind.tail(60))
+                ind_list_all.append(stock_kdj_ind)
+            except Exception as e:
+                TNLog().error("=================================================")
+                TNLog().error("==== get KDJ MACD run_indicator_weekly error ====")
+                TNLog().error(e)
+                TNLog().error("=================================================")
+                pass
 
         df_out_last = pd.DataFrame(ind_list_last)
         df_out_all = pd.concat(ind_list_all)
@@ -143,15 +146,45 @@ class StockIndex(ProjectDir):
         df_out_last5.round(3).to_csv(self.dir_stock_kdj_weekly_last5,index=0) # type: ignore
         df_out_last60.round(3).to_csv(self.dir_stock_kdj_weekly_last60,index=0) # type: ignore
         # conn.close()
-        print("======================================")
-        TNLog().info("=finish get stock weekly indicators=")
-        print("=====================================")
+        # TNLog().info("======================================")
+        # TNLog().info("=finish get stock weekly indicators=")
+        # TNLog().info("=====================================")
+
+    def insert_index_data2db(self):
+        insert_df_to_db(self.dir_stock_kdj_daily_last,
+                        "t_stock_kdj_daily_last", if_there="replace")
+        insert_df_to_db(self.dir_stock_kdj_daily_all,
+                        "t_stock_kdj_daily_all", if_there="replace")
+        insert_df_to_db(self.dir_stock_kdj_daily_last5,
+                        "t_stock_kdj_daily_last5", if_there="replace")
+        insert_df_to_db(self.dir_stock_kdj_daily_last60,
+                        "t_stock_kdj_daily_last60", if_there="replace")
+        """
+        insert weekly 
+        """
+        insert_df_to_db(self.dir_stock_kdj_weekly_last,
+                        "t_stock_kdj_weekly_last", if_there="replace")
+        insert_df_to_db(self.dir_stock_kdj_weekly_all,
+                        "t_stock_kdj_weekly_all", if_there="replace")
+        insert_df_to_db(self.dir_stock_kdj_weekly_last5,
+                        "t_stock_kdj_weekly_last5", if_there="replace")
+        insert_df_to_db(self.dir_stock_kdj_weekly_last60,
+                        "t_stock_kdj_weekly_last60", if_there="replace")
 
 
 if __name__ == '__main__':
-    stock_index_v1 = StockIndex(ProjectDir)
-    stock_index_v1.run_indicator(GetDataFromDB)
-    stock_index_v1.run_indicator_weekly(GetDataFromDB)
-    stock_index_v1.insert_index_data2db()
-    
-    
+    try:
+        stock_index_v1 = StockIndex(ProjectDir)
+        stock_index_v1.run_indicator(GetDataFromDB)
+        stock_index_v1.run_indicator_weekly(GetDataFromDB)
+        stock_index_v1.insert_index_data2db()
+
+        TNLog().info("====================================")
+        TNLog().info("==== finish KDJ MACD calculation ===")
+        TNLog().info("====================================")
+    except Exception as e:
+        TNLog().error("====================================")
+        TNLog().error("==== get KDJ MACD error ====")
+        TNLog().error(e)
+        print_exception_info()
+        TNLog().error("====================================")

@@ -50,9 +50,10 @@ class DownloadSinaOwner:
         owner_list = DataURLSina().sina_owner_list()
 
         for owner_name, url in owner_list:
-            print(f"========= start {owner_name}=============")
-            self.download_owner_sina(owner_name, url)
-            time.sleep(10)
+            if owner_name=="sina_owner_hkjiesuan":
+                print(f"========= start {owner_name}=============")
+                self.download_owner_sina(owner_name, url)
+                time.sleep(10)
 
 
     """

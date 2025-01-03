@@ -15,7 +15,7 @@ from scripts_stock.utils.logging_set import *
 
 class DownloadCashFlowData(ProjectDir):
     def __init__(self,ProjectDir):
-        self.stock_list = GetDataFromDB.db_get_hs300_list(if_str=True)
+        self.stock_list = GetDataFromDB.db_get_hs300_list(if_str=True) + ['600008','600598','601059']
         self.save_tmp_txt_dir = ProjectDir.download_data_dir_cash_flow
         self.tmp_data_txt_name = ''
         self.tmp_data_csv_name = os.path.join(self.save_tmp_txt_dir,"tmp_cash_flow_all.csv")

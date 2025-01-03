@@ -58,21 +58,23 @@ class DownloadFinReport(ProjectDir):
         if mode=="all":
             max_loop = 200
         for i in range(1,max_loop):
-            file_size = self.download_tmp_txt(i)
-            if file_size<1:
-                print("\n===========\n")        
-                print(i)
-                break
             try:
-                self.download_tmp_txt(i)
-                self.parse_cash_flow_data()
-                time.sleep(10)
+                file_size = self.download_tmp_txt(i)
+                if file_size<1:
+                    print("\n===========\n")        
+                    TNLog().info("=========== fin report ============")
+                    TNLog().info(f"===== break in {i} loop")
+                    break
+                else:
+                    self.parse_cash_flow_data()
+                    time.sleep(10)
             except Exception as e:
                 TNLog().error("=========== download_fin_report_error ============")
                 TNLog().error(e)
                 TNLog().error(self.download_url)
         self.combine_finreport_data()
         delete_files_in_folder(self.save_tmp_txt_dir)
+        delete_files_in_folder(self.save_tmp_txt_dir,".csv")
         print("======================================")
         TNLog().info("=finish get fin report data=")
         print("=====================================")
@@ -80,5 +82,10 @@ class DownloadFinReport(ProjectDir):
 
 
 if __name__ == "__main__":
-    df_out = DownloadFinReport(ProjectDir).main_run("test")
+    df_out = DownloadFinReport(ProjectDir).main_run("all")
     print(df_out)
+
+"""
+   column name
+     stock_index 	stock_name	TRADE_MARKET_CODE	TRADE_MARKET	SECURITY_TYPE_CODE	SECURITY_TYPE	UPDATE_DATE	REPORTDATE	每股收益	DEDUCT_BASIC_EPS	营业总收入	净利润	净资产收益率	营业总收入同比增长率	净利润同比增长率	每股净资产	每股经营现金流	销售毛利率	营业总收入季度环比增长	净利润季度环比增长	分红	PAYYEAR	行业	ZXGXL	NOTICE_DATE	ORG_CODE	TRADE_MARKET_ZJG	ISNEW	QDATE	DATATYPE	DATAYEAR	DATEMMDD	EITIME	SECUCODE
+"""

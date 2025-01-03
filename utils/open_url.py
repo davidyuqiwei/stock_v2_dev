@@ -49,7 +49,7 @@ def table_to_DF(table, new_table_index, DF_columns):
 
 if __name__ == '__main__':
     url1 = "https://vip.stock.finance.sina.com.cn/corp/view/vCI_HoldStockState.php?stockid=000887&stockholderid=70010102"
-    url1 = "https://vip.stock.finance.sina.com.cn/corp/view/vCI_HoldStockState.php?stockid=000887&stockholderid=80128964"
+    url1 = "https://vip.stock.finance.sina.com.cn/corp/go.php/vCI_StockHolder/stockid/601398.phtml"
     table, new_table_index = get_html_table(url1)
     # print(a1)
     # new_table = table_to_DF(table, new_table_index, 8)
@@ -58,4 +58,4 @@ if __name__ == '__main__':
     # a3 = a2.get_text()
     # a4 = a3.split(" ")
 
-    print(new_table)
+    print(table)

@@ -10,7 +10,7 @@ from scripts_stock.utils.logging_set import *
 dt = datetime.now()
 
 
-def df_save_to_db(input_df,target_db="test.db",target_table="test"):
+def df_save_to_db(input_df,target_db="test.db",target_table="test",if_there="append"):
     dt = datetime.now()
     print("------------------------")
     print(dt)
@@ -18,7 +18,7 @@ def df_save_to_db(input_df,target_db="test.db",target_table="test"):
 
     input_df["update_time"] = dt
     conn = CommonScript.connect_to_db(target_db)
-    input_df.drop_duplicates().to_sql(target_table, conn, if_exists="replace", index=False)
+    input_df.drop_duplicates().to_sql(target_table, conn, if_exists=if_there, index=False)
     conn.close()
     TNLog().info(f"=========== data save to {target_table} =============")
     print_table_test(db=target_db,table_name=target_table)
@@ -54,10 +54,12 @@ def read_db_data(data_dir):
     df1 = pd.read_csv(os.path.join(data_dir),encoding="utf-8-sig")
     return df1
 
-def insert_df_to_db(data_dir,target_table,target_db="test.db",encoding_in="utf-8-sig"):
+
+def insert_df_to_db(data_dir, target_table, target_db="test.db", encoding_in="utf-8-sig", if_there="append"):
     try:
         df1 = pd.read_csv(data_dir,encoding=encoding_in)
-        df_save_to_db(df1,target_db=target_db,target_table=target_table)
+        df_save_to_db(df1, target_db=target_db,
+                      target_table=target_table, if_there=if_there)
         TNLog().info(f"=========== call insert_df_to_db=============")
         print_table_test(db="test.db",table_name=target_table)
     except Exception as e:
@@ -79,6 +81,8 @@ def insert_df_to_db(data_dir,target_table,target_db="test.db",encoding_in="utf-8
 
 
 if __name__ == "__main__":
-    print("aaa")
+    df1 = pd.read_csv(
+        "/home/davidyu/vscode/data/parse_data/owner_sina/owner_sina_combine.csv")
+    df_save_to_db(input_df=df1, target_table="prd_t_owner_sina")
     #fuquan_data_insert_to_db(DbCfg.fuquan_db_dfcf)
     #owner_sina_data_insert_to_db()
