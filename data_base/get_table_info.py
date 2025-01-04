@@ -33,10 +33,10 @@ class GetDataFromDB:
 
     @staticmethod
     def get_fuquan_all_one_stock_df(stock_index):
-        conn = CommonScript.connect_to_db("test.db")
-        cursor = conn.cursor()
+        input_sql_str = f"""SELECT *  FROM prd_clean_t_fuquan_dfcf where stock_index={stock_index}"""
+        conn = CommonScript.connect_to_db("prod.db")
         #sql_query_stock_index = 
-        input_sql_str = get_all_fuquan_one_stock(stock_index)
+        #input_sql_str = get_all_fuquan_one_stock(stock_index)
         df1 = pd.read_sql_query(input_sql_str, conn)
         conn.close()
         return df1
@@ -78,5 +78,5 @@ class GetDataFromDB:
 
 if __name__ == "__main__":
     #a1 = getDataFromDB.db_get_hs300_list()
-    a1 = GetDataFromDB.get_fuquan_stock_index_all()
+    a1 = GetDataFromDB.get_fuquan_all_one_stock_df(600025)
     print(a1)

@@ -10,7 +10,7 @@ from scripts_stock.utils.string_process import StringProcess
 from scripts_stock.utils.datetime.date_function import date_today_yesterday
 
 
-class DataCheck():
+class DataCheckProd():
 
     def __init__(self):
         # self.stock_list = GetDataFromDB.db_get_hs300_list(if_str=True)
@@ -19,11 +19,9 @@ class DataCheck():
         # self.save_csv_dir = ProjectDir.parse_data_dir_bankuai_cash_flow
         self.final_data_name = ""
 
-        self.table_list = ['prd_t_fuquan_dfcf',
-                           'r_t_cash_flow_stocks',
-                           't_stock_kdj_daily_last',
-                           't_stock_kdj_weekly_last']
-        self.table_list_v2 = ['r_t_hs300_etf']
+        self.table_list = ['prd_clean_t_fuquan_dfcf',
+                           ]
+        self.table_list_v2 = ['prd_clean_t_hs300_etf']
         self.table = ''
         self.all_table = self.table_list+self.table_list_v2
 
@@ -39,7 +37,7 @@ class DataCheck():
         from {self.table} 
         
         """
-        conn = CommonScript.connect_to_db("test.db")
+        conn = CommonScript.connect_to_db("prod.db")
         df1 = pd.read_sql_query(sql_str, conn)
         return df1
 
@@ -51,10 +49,11 @@ class DataCheck():
         count(1) as total_rows_cnt,
         count(distinct date) as total_date_cnt,
         max(update_time) as update_time
+
         from {self.table} 
         
         """
-        conn = CommonScript.connect_to_db("test.db")
+        conn = CommonScript.connect_to_db("prod.db")
         df1 = pd.read_sql_query(sql_str, conn)
         return df1
 
@@ -96,6 +95,6 @@ class DataCheck():
 
 
 if __name__ == "__main__":
-    a1, a2 = DataCheck().main_run()
+    a1, a2 = DataCheckProd().main_run()
     print(a1)
     print(a2)

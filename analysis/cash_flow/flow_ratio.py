@@ -29,10 +29,10 @@ sql_str = f"""
      where date>='{start_date}' and date<='{end_date}'
         
 """
-
 conn = CommonScript.connect_to_db("test.db")
 df1 = pd.read_sql_query(sql_str, conn)
-df1.tail(4)
+print(df1.tail(4))
+print("get data")
 
 
 def normalize_row(row):

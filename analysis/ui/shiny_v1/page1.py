@@ -50,9 +50,11 @@ def ui_page1(input, output, session, label="Increment counter", starting_value=0
                     @render.data_frame
                     def table():
                         if input.var() == "important_kpi":
-                            return df_daily_kdj_last[["stock_index", "stock_name", "kdjj", "macdh"]].sort_values("kdjj")
+                            df_back = df_daily_kdj_last[["stock_index", "stock_name", "kdjj", "macdh"]].sort_values(
+                                "kdjj")
+                            return render.DataTable(df_back, filters=True)
                         else:
-                            return df_daily_kdj_last
+                            return render.DataTable(df_daily_kdj_last, filters=True)
                         
             with ui.layout_column_wrap(fill=False, height=600):
                     with ui.card():
@@ -60,18 +62,22 @@ def ui_page1(input, output, session, label="Increment counter", starting_value=0
                         @render.data_frame
                         def table_weekly():
                             if input.var() == "important_kpi":
-                                return df_weekly_kdj_last[["date","stock_index", "stock_name", "kdjj", "macdh"]].sort_values("kdjj")
+                                df_back = df_weekly_kdj_last[[
+                                    "date", "stock_index", "stock_name", "kdjj", "macdh"]].sort_values("kdjj")
+                                return render.DataTable(df_back, filters=True)
                             else:
-                                return df_weekly_kdj_last
+                                return render.DataTable(df_weekly_kdj_last, filters=True)
                     
                     with ui.card():
                         ui.card_header("Weekly KJD MACD - Last 5 week")
                         @render.data_frame
                         def table_weekly_last5():
                             if input.var() == "important_kpi":
-                                return df_weekly_kdj_last5[["date", "stock_index", "stock_name", "kdjj", "macdh"]].sort_values("kdjj")
+                                df_back = df_weekly_kdj_last5[[
+                                    "date", "stock_index", "stock_name", "kdjj", "macdh"]].sort_values("kdjj")
+                                return render.DataTable(df_back, filters=True)
                             else:
-                                return df_weekly_kdj_last5
+                                return render.DataTable(df_weekly_kdj_last5, filters=True)
                         
 
 

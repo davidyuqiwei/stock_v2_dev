@@ -4,9 +4,8 @@ import pandas as pd
 from scripts_stock.utils.logging_set import *
 
 etl_table_list = [
-    "prd_t_owner_sina",
     "prd_t_fuquan_dfcf",
-    "prd_t_hs300_daily"
+    "r_t_hs300_etf"
 ]
 
 def etl_test_to_prod(input_table):
@@ -20,6 +19,11 @@ for table_in in etl_table_list:
     conn.close()
 
     conn = CommonScript.connect_to_db("prod.db")
-    df_save_to_db(df1,"prod.db",table_in)
+    if table_in == 'prd_t_fuquan_dfcf':
+        df_save_to_db(df1,"prod.db",table_in.replace("prd_","prd_raw_"))
+    else:
+        df_save_to_db(df1,"prod.db",table_in,if_there="replace")
     conn.close()
     TNLog().info("==== +++++  finish all table from test to PROD ++++++ =====")
+
+

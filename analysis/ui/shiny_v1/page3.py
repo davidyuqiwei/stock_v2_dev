@@ -64,6 +64,7 @@ def ui_page3(input, output, session, label="cash_flow", starting_value=0):
                         except:
                             df2 = get_sample_data_owner("sina_owner_keweite")
                             return df2
+                        
                 with ui.card(height=200):
                     @render.data_frame
                     def table3():

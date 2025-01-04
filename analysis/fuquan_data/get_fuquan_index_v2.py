@@ -28,6 +28,23 @@ def get_stock_indicator(stock_df_in,if_print=False):
     #stock_kdj_ind["stock_index"] = stock_df_in["stock_index"].values[0]
     return stock_kdj_ind
 
+def weekly_data_preprocess(df_raw):
+    df_raw['datetime'] = pd.to_datetime(df_raw['date'])
+    df_raw['week_group'] = df_raw['datetime'].dt.to_period(
+        'W-FRI').apply(lambda r: r.end_time.strftime("%Y-%m-%d"))
+    return df_raw
+
+def get_weekly_price_v2(input_df: pd.DataFrame):
+    df1 = input_df
+    df2 = df1.groupby("week_group").min()
+    df3 = df1.groupby("week_group").max()
+    df4 = df1.groupby("week_group").last()
+    df5 = df1.groupby("week_group").first()
+    df2["high"] = df3["high"]
+    df2["close"] = df4["close"]
+    df2["open"] = df5["open"]
+    df2['stock_date'] = df3["date"]
+    return df2
 
 class StockIndex(ProjectDir):
     def __init__(self,ProjectDir):
@@ -42,8 +59,8 @@ class StockIndex(ProjectDir):
         self.dir_stock_kdj_weekly_last60 = os.path.join(ProjectDir.analysis_data_dir,"stock_kdj_weekly_last60.csv")
 
         self.stock_index_list = GetDataFromDB.get_fuquan_stock_index_all()
+        
 
-    
     def run_indicator(self , GetDataFromDB,if_test="ALL"):
         """
         calculate daily indicator
@@ -103,6 +120,9 @@ class StockIndex(ProjectDir):
         df2["open"] = df5["open"]
         df2['stock_date'] = df3["date"]
         return df2
+
+
+
     
     def run_indicator_weekly(self,GetDataFromDB,if_test="ALL"):
         """
@@ -119,11 +139,9 @@ class StockIndex(ProjectDir):
             stock_index_list_loop = self.stock_index_list
         for stock_index in stock_index_list_loop:
             try:
-                df_raw = GetDataFromDB.get_fuquan_all_one_stock_df(stock_index)
-                start_from = df_raw.shape[0]%5
-                df1 = df_raw.iloc[start_from:].copy(
-                    deep=False).reset_index().sort_values("date")
-                df_input = self.get_weekly_price(df1)
+                df_raw_v1 = GetDataFromDB.get_fuquan_all_one_stock_df(stock_index)
+                df_raw = weekly_data_preprocess(df_raw_v1)
+                df_input = get_weekly_price_v2(df_raw)
                 stock_kdj_ind = get_stock_indicator(df_input)
                 ind_list_last.append(stock_kdj_ind.iloc[-1])
                 ind_list_last5.append(stock_kdj_ind.tail(5))

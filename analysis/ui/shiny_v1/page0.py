@@ -8,6 +8,8 @@ import plotly.express as px
 from shiny.ui import output_ui
 from shiny import reactive
 from scripts_stock.analysis.ui.fun_data_health_check.data_check_v1 import *
+from scripts_stock.analysis.ui.fun_data_health_check.data_check_prod import *
+
 from scripts_stock.analysis.ui.shiny_v1.cfg_p0 import *
 
 
@@ -44,10 +46,27 @@ def ui_page0(input, output, session, label="Increment counter", starting_value=0
                     def change():
                         stock_date = str(df_daily_kdj_last["date"].unique()[0])
                         return stock_date
+                    
+            with ui.layout_column_wrap(fill=False, width=1, height=400):
+                with ui.card(height=1):
+                    ui.card_header("Prod DB table check")
+
+                    @render.data_frame
+                    def table_prod1():
+                        df1, _ = DataCheckProd().main_run()
+                        return df1
+
+                with ui.card():
+                    ui.card_header("Prod DB table check v2")
+
+                    @render.data_frame
+                    def table_prod2():
+                        _, df2 = DataCheckProd().main_run()
+                        return df2
 
             with ui.layout_column_wrap(fill=False, width=1, height=600):
                 with ui.card(height=1):
-                    ui.card_header("Daily KJD MACD")
+                    ui.card_header("Test DB table check")
 
                     @render.data_frame
                     def table1():
@@ -56,7 +75,7 @@ def ui_page0(input, output, session, label="Increment counter", starting_value=0
 
             
                 with ui.card():
-                    ui.card_header("Weekly KJD MACD")
+                    ui.card_header("Test DB table check v2")
 
                     @render.data_frame
                     def table_weekly():

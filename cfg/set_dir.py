@@ -47,7 +47,10 @@ class ProjectDir():
     parse_data_dir_bankuai_cash_flow = os.path.join(
         parse_data_dir, "cash_flow", "bankuai")
     
-
+    download_data_dir_hangye_cash_flow = os.path.join(
+        download_data_dir, "cash_flow", "hangye")
+    parse_data_dir_hangye_cash_flow = os.path.join(
+        parse_data_dir, "cash_flow", "hangye")
 
     """
     Level 2 dir

@@ -7,7 +7,7 @@ print_sample_data_json = {
                   "r_t_fin_report": "r_t_fin_report"
                   },
     "Calculate_Table": {"cal_t_hs300_etf_daily_return": "cal_t_hs300_etf_daily_return",
-                         "2B": "Choice 2B", "2C": "Choice 2C"
+                        "t_stock_kdj_daily_last": "t_stock_kdj_daily_last", "2C": "Choice 2C"
                          
                         },
 }

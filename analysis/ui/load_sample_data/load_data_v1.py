@@ -19,10 +19,18 @@ on t1.stock_index=t2.stock_index"""
 
 
 def get_data_owner(owner_name):
-    return f"""select * from m_owner_stock_name_price_hs300 where owner_name='{owner_name}'"""
+    return f"""select * from r_t_owner_dfcf where HOLDER_NAME='{owner_name}'
+    and substr(END_DATE,1,10)='2024-09-30' limit 100
+    """
 
 def get_data_owner_list():
-    return f"""select distinct owner_name,update_date from m_owner_stock_name_price_hs300 """
+    return f"""
+    select distinct HOLDER_NAME,HOLDER_TYPE,
+    substr(END_DATE,1,10) as update_date 
+    from r_t_owner_dfcf 
+    where HOLDER_TYPE<>'个人' and substr(END_DATE,1,10)='2024-09-30'
+    limit 10
+    """
 
 
 def get_weekly_kdj_data():
